@@ -1,0 +1,867 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Sweet Haven — Home Decor</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@300;400;500&family=Pinyon+Script&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --cream: #FFF6EE;
+    --blush: #FFDBBB;
+    --sand: #CCBEB1;
+    --clay: #997E67;
+    --bark: #664930;
+    --dark: #2C1A0E;
+    --white: #FDFAF7;
+  }
+  *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+  html { scroll-behavior: smooth; }
+  body { font-family: 'Jost', sans-serif; background: var(--cream); color: var(--dark); overflow-x:hidden; }
+
+  /* ── HEADER ── */
+  header {
+    position: fixed; top:0; left:0; right:0; z-index:999;
+    display:flex; align-items:center; justify-content:space-between;
+    padding: 0 3rem; height: 72px;
+    background: rgba(255,246,238,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(153,126,103,0.18);
+    transition: background 0.3s;
+  }
+  .logo-wrap { display:flex; align-items:center; gap:0.7rem; text-decoration:none; }
+  .logo-wrap img { height:48px; width:48px; object-fit:contain; }
+  .logo-text { font-family:'Cormorant Garamond', serif; font-size:1.45rem; font-weight:600; color:var(--bark); letter-spacing:0.04em; }
+  nav { display:flex; gap:0.2rem; }
+  nav a {
+    font-size:0.82rem; letter-spacing:0.1em; text-transform:uppercase; font-weight:500;
+    color:var(--dark); text-decoration:none; padding:0.45rem 0.85rem; border-radius:2rem;
+    transition: background 0.2s, color 0.2s;
+  }
+  nav a:hover, nav a.active { background:var(--blush); color:var(--bark); }
+  .header-right { display:flex; align-items:center; gap:0.5rem; }
+  .search-wrap { display:flex; align-items:center; background:var(--blush); border-radius:2rem; padding:0.35rem 1rem; gap:0.5rem; }
+  .search-wrap input { border:none; background:transparent; font-family:'Jost',sans-serif; font-size:0.82rem; color:var(--dark); outline:none; width:120px; }
+  .search-wrap input::placeholder { color:var(--clay); }
+  .icon-btn { background:none; border:none; cursor:pointer; width:38px; height:38px; border-radius:50%; display:flex; align-items:center; justify-content:center; color:var(--bark); transition:background 0.2s; position:relative; }
+  .icon-btn:hover { background:var(--blush); }
+  .cart-badge { position:absolute; top:2px; right:2px; background:var(--bark); color:#fff; font-size:0.6rem; width:16px; height:16px; border-radius:50%; display:flex; align-items:center; justify-content:center; }
+
+  /* ── HERO ── */
+  .hero {
+    position:relative; width:100%; height:100vh; overflow:hidden;
+    display:flex; align-items:center; justify-content:flex-start;
+  }
+  .hero-bg {
+    position:absolute; inset:0; z-index:0;
+    background: linear-gradient(135deg, #2C1A0E 0%, #664930 35%, #997E67 70%, #CCBEB1 100%);
+    overflow:hidden;
+  }
+  /* Animated botanical SVG shapes as background art */
+  .hero-art { position:absolute; inset:0; opacity:0.18; }
+  .hero-overlay { position:absolute; inset:0; background: linear-gradient(to right, rgba(44,26,14,0.82) 0%, rgba(44,26,14,0.55) 55%, rgba(44,26,14,0.1) 100%); }
+  .hero-content { position:relative; z-index:2; padding:0 6rem; max-width:700px; }
+  .hero-eyebrow { font-size:0.72rem; letter-spacing:0.22em; text-transform:uppercase; color:var(--blush); opacity:0.8; margin-bottom:1.2rem; animation: fadeUp 0.8s ease 0.2s both; }
+  .hero-title { font-family:'Cormorant Garamond', serif; font-size:clamp(3rem,5.5vw,5.2rem); line-height:1.05; color:#FFF6EE; font-weight:300; margin-bottom:1.4rem; animation: fadeUp 0.9s ease 0.4s both; }
+  .hero-title em { font-style:italic; color:var(--blush); }
+  .hero-sub { font-size:0.95rem; color:rgba(255,219,187,0.75); line-height:1.75; max-width:420px; margin-bottom:2.5rem; font-weight:300; animation: fadeUp 0.9s ease 0.6s both; }
+  .hero-btns { display:flex; gap:1rem; animation: fadeUp 0.9s ease 0.8s both; flex-wrap:wrap; }
+  .btn-primary {
+    font-family:'Jost',sans-serif; font-size:0.78rem; letter-spacing:0.14em; text-transform:uppercase; font-weight:500;
+    background:var(--bark); color:#FFF6EE; padding:0.85rem 2.2rem; border:none; cursor:pointer; border-radius:0;
+    text-decoration:none; display:inline-block; transition: background 0.25s, transform 0.2s;
+  }
+  .btn-primary:hover { background:var(--clay); transform:translateY(-2px); }
+  .btn-outline {
+    font-family:'Jost',sans-serif; font-size:0.78rem; letter-spacing:0.14em; text-transform:uppercase; font-weight:500;
+    background:transparent; color:#FFF6EE; padding:0.85rem 2.2rem; border:1px solid rgba(255,219,187,0.45);
+    cursor:pointer; border-radius:0; text-decoration:none; display:inline-block; transition:border-color 0.25s, color 0.25s, transform 0.2s;
+  }
+  .btn-outline:hover { border-color:var(--blush); color:var(--blush); transform:translateY(-2px); }
+  .hero-scroll { position:absolute; bottom:2.5rem; left:50%; transform:translateX(-50%); z-index:2; display:flex; flex-direction:column; align-items:center; gap:0.4rem; animation:fadeIn 1s ease 1.5s both; }
+  .hero-scroll span { font-size:0.65rem; letter-spacing:0.2em; text-transform:uppercase; color:rgba(255,219,187,0.55); }
+  .scroll-line { width:1px; height:40px; background:linear-gradient(to bottom,transparent,rgba(255,219,187,0.5)); animation:scrollPulse 1.8s ease infinite; }
+
+  /* ── STYLE TICKER ── */
+  .ticker-wrap { background:var(--bark); overflow:hidden; padding:0.7rem 0; }
+  .ticker-track { display:flex; animation:tickerMove 28s linear infinite; white-space:nowrap; }
+  .ticker-item { font-family:'Cormorant Garamond', serif; font-size:1rem; font-weight:400; letter-spacing:0.15em; text-transform:uppercase; color:var(--blush); padding:0 3rem; flex-shrink:0; display:flex; align-items:center; gap:1.5rem; }
+  .ticker-dot { width:5px; height:5px; border-radius:50%; background:var(--sand); display:inline-block; }
+
+  /* ── ABOUT ── */
+  .about { padding: 7rem 6rem; display:grid; grid-template-columns:1fr 1fr; gap:6rem; align-items:center; background:var(--cream); }
+  .about-visual { position:relative; }
+  .about-frame { width:100%; aspect-ratio:3/4; background:linear-gradient(145deg,#997E67,#664930); border-radius:0; overflow:hidden; position:relative; }
+  .about-frame-inner { position:absolute; inset:1rem; background:var(--blush); display:flex; align-items:center; justify-content:center; overflow:hidden; }
+  .about-frame-inner svg { width:100%; height:100%; opacity:0.35; }
+  .about-badge { position:absolute; bottom:-1.5rem; right:-1.5rem; width:130px; height:130px; background:var(--blush); border-radius:50%; display:flex; flex-direction:column; align-items:center; justify-content:center; font-family:'Cormorant Garamond',serif; border:3px solid var(--sand); animation:spinSlow 18s linear infinite; }
+  .about-badge-num { font-size:2rem; font-weight:600; color:var(--bark); line-height:1; }
+  .about-badge-lbl { font-size:0.55rem; letter-spacing:0.15em; text-transform:uppercase; color:var(--clay); text-align:center; }
+  .about-tag { position:absolute; top:1.5rem; left:-2rem; background:var(--bark); color:var(--blush); font-size:0.65rem; letter-spacing:0.2em; text-transform:uppercase; padding:0.5rem 1.2rem; writing-mode:vertical-rl; transform:rotate(180deg); }
+  .about-text .eyebrow { font-size:0.7rem; letter-spacing:0.22em; text-transform:uppercase; color:var(--clay); margin-bottom:1rem; }
+  .about-title { font-family:'Cormorant Garamond',serif; font-size:clamp(2rem,3.5vw,3.2rem); line-height:1.15; font-weight:300; color:var(--dark); margin-bottom:1.5rem; }
+  .about-title em { font-style:italic; color:var(--bark); }
+  .about-body { font-size:0.9rem; line-height:1.9; color:#5a4030; margin-bottom:2rem; font-weight:300; }
+  .about-stats { display:flex; gap:2rem; padding-top:1.5rem; border-top:1px solid var(--sand); }
+  .stat .num { font-family:'Cormorant Garamond',serif; font-size:2.2rem; font-weight:600; color:var(--bark); line-height:1; }
+  .stat .lbl { font-size:0.7rem; letter-spacing:0.12em; text-transform:uppercase; color:var(--clay); margin-top:0.25rem; }
+
+  /* ── DNA ── */
+  .dna-section { padding:6rem 6rem; background:linear-gradient(180deg,#FFF6EE 0%,#F5E8DC 100%); }
+  .section-eyebrow { font-size:0.7rem; letter-spacing:0.22em; text-transform:uppercase; color:var(--clay); text-align:center; margin-bottom:0.8rem; }
+  .section-title { font-family:'Cormorant Garamond',serif; font-size:clamp(1.8rem,3vw,2.8rem); font-weight:300; text-align:center; color:var(--dark); margin-bottom:0.5rem; }
+  .section-title em { font-style:italic; color:var(--bark); }
+  .section-sub { text-align:center; font-size:0.85rem; color:var(--clay); margin-bottom:3.5rem; font-weight:300; }
+  .dna-grid { display:grid; grid-template-columns:repeat(5,1fr); gap:1.2rem; }
+  .dna-card {
+    background:var(--white); border:1px solid var(--sand); padding:2rem 1rem; text-align:center;
+    cursor:pointer; transition:all 0.3s; position:relative; overflow:hidden;
+  }
+  .dna-card::before { content:''; position:absolute; bottom:0; left:0; right:0; height:3px; background:var(--bark); transform:scaleX(0); transition:transform 0.3s; }
+  .dna-card:hover::before, .dna-card.active::before { transform:scaleX(1); }
+  .dna-card:hover { box-shadow:0 12px 40px rgba(102,73,48,0.15); transform:translateY(-6px); background:#fff; }
+  .dna-card.active { background:var(--bark); border-color:var(--bark); }
+  .dna-card.active .dna-icon, .dna-card.active .dna-name { color:var(--blush); }
+  .dna-card.active .dna-desc { color:var(--sand); }
+  .dna-icon { font-size:2.2rem; margin-bottom:1rem; display:block; }
+  .dna-name { font-family:'Cormorant Garamond',serif; font-size:1.1rem; font-weight:600; letter-spacing:0.08em; text-transform:uppercase; color:var(--bark); margin-bottom:0.5rem; }
+  .dna-desc { font-size:0.72rem; color:var(--clay); line-height:1.6; font-weight:300; }
+
+  /* ── FEATURED ── */
+  .featured { padding:6rem 4rem; background:var(--cream); }
+  .products-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:1.5rem; margin-top:3.5rem; }
+  .product-card { background:var(--white); position:relative; overflow:hidden; cursor:pointer; transition:box-shadow 0.3s; }
+  .product-card:hover { box-shadow:0 20px 60px rgba(102,73,48,0.15); }
+  .product-img { width:100%; aspect-ratio:4/5; overflow:hidden; position:relative; background:var(--blush); }
+  .product-img-inner { width:100%; height:100%; display:flex; align-items:center; justify-content:center; transition:transform 0.5s; }
+  .product-card:hover .product-img-inner { transform:scale(1.06); }
+  .product-img svg { width:75%; height:75%; }
+  .product-badge { position:absolute; top:1rem; left:1rem; background:var(--bark); color:var(--blush); font-size:0.6rem; letter-spacing:0.12em; text-transform:uppercase; padding:0.3rem 0.8rem; }
+  .product-info { padding:1.2rem 1.2rem 1.5rem; }
+  .product-name { font-family:'Cormorant Garamond',serif; font-size:1.1rem; font-weight:600; color:var(--dark); margin-bottom:0.5rem; }
+  .product-prices { display:flex; align-items:center; gap:0.75rem; margin-bottom:1rem; }
+  .price-new { font-size:1rem; font-weight:500; color:var(--bark); }
+  .price-old { font-size:0.85rem; color:var(--sand); text-decoration:line-through; }
+  .price-save { font-size:0.65rem; background:#e8f5e9; color:#388e3c; padding:0.2rem 0.5rem; letter-spacing:0.08em; }
+  .add-cart-btn {
+    width:100%; padding:0.75rem; background:transparent; border:1px solid var(--bark); color:var(--bark);
+    font-family:'Jost',sans-serif; font-size:0.72rem; letter-spacing:0.14em; text-transform:uppercase; cursor:pointer;
+    transition:all 0.25s;
+  }
+  .add-cart-btn:hover { background:var(--bark); color:var(--blush); }
+  .wishlist-btn { position:absolute; top:1rem; right:1rem; background:rgba(255,246,238,0.85); border:none; cursor:pointer; width:34px; height:34px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:1rem; transition:background 0.2s; }
+  .wishlist-btn:hover { background:var(--blush); }
+
+  /* ── PALETTE ── */
+  .palette-section { padding:6rem 6rem; background:linear-gradient(180deg,var(--cream) 0%,#f0e2d4 100%); }
+  .palette-inner { display:grid; grid-template-columns:1fr 1fr; gap:5rem; align-items:start; margin-top:3rem; }
+  .palette-colors { display:grid; grid-template-columns:repeat(5,1fr); gap:0.8rem; }
+  .palette-swatch {
+    aspect-ratio:1; border-radius:50%; cursor:pointer; transition:transform 0.25s, box-shadow 0.25s;
+    border:3px solid transparent; position:relative;
+  }
+  .palette-swatch:hover { transform:scale(1.1); box-shadow:0 8px 24px rgba(0,0,0,0.15); }
+  .palette-swatch.selected { border-color:var(--bark); transform:scale(1.12); box-shadow:0 0 0 4px rgba(102,73,48,0.25); }
+  .palette-swatch.selected::after { content:'✓'; position:absolute; inset:0; display:flex; align-items:center; justify-content:center; font-size:1.2rem; color:rgba(255,255,255,0.9); }
+  .palette-result { background:var(--white); padding:2rem; border:1px solid var(--sand); }
+  .palette-result h3 { font-family:'Cormorant Garamond',serif; font-size:1.4rem; font-weight:600; margin-bottom:0.5rem; color:var(--dark); }
+  .palette-result p { font-size:0.82rem; color:var(--clay); margin-bottom:1.5rem; font-weight:300; line-height:1.7; }
+  .selected-swatches { display:flex; gap:0.5rem; margin-bottom:1rem; min-height:60px; }
+  .sel-swatch { width:56px; height:56px; border-radius:0; flex-shrink:0; }
+  .hex-codes { display:flex; gap:0.5rem; flex-wrap:wrap; margin-bottom:1.5rem; }
+  .hex-code { font-size:0.65rem; background:var(--blush); padding:0.25rem 0.6rem; color:var(--bark); letter-spacing:0.08em; }
+  .palette-cta { display:inline-block; }
+  .palette-left-desc { font-size:0.85rem; color:#5a4030; line-height:1.8; margin-bottom:1.5rem; font-weight:300; }
+
+  /* ── REVIEWS ── */
+  .reviews { padding:6rem 4rem; background:var(--dark); overflow:hidden; }
+  .reviews .section-eyebrow { color:var(--sand); }
+  .reviews .section-title { color:var(--white); }
+  .reviews .section-title em { color:var(--blush); }
+  .reviews-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:1.5rem; margin-top:3.5rem; }
+  .review-card { border:1px solid rgba(204,190,177,0.18); padding:2rem; position:relative; transition:border-color 0.3s; }
+  .review-card:hover { border-color:rgba(255,219,187,0.35); }
+  .review-quote { font-family:'Cormorant Garamond',serif; font-size:4rem; color:var(--clay); opacity:0.35; line-height:0.6; margin-bottom:1rem; }
+  .review-text { font-family:'Cormorant Garamond',serif; font-size:1.05rem; font-style:italic; color:rgba(253,250,247,0.85); line-height:1.75; margin-bottom:1.5rem; font-weight:300; }
+  .review-author { display:flex; align-items:center; gap:0.75rem; }
+  .review-avatar { width:40px; height:40px; border-radius:50%; background:var(--clay); display:flex; align-items:center; justify-content:center; font-size:0.75rem; color:var(--blush); font-weight:500; flex-shrink:0; }
+  .review-name { font-size:0.82rem; font-weight:500; color:var(--blush); }
+  .review-location { font-size:0.7rem; color:var(--sand); }
+  .review-stars { color:#d4a843; font-size:0.75rem; letter-spacing:0.1em; }
+
+  /* ── FOOTER ── */
+  footer { background:#1e1008; padding:5rem 6rem 3rem; }
+  .footer-grid { display:grid; grid-template-columns:1.4fr 1fr 1fr 1fr; gap:4rem; margin-bottom:3.5rem; }
+  .footer-brand .logo-text { font-family:'Cormorant Garamond',serif; font-size:1.6rem; color:var(--blush); display:block; margin-bottom:1rem; }
+  .footer-brand p { font-size:0.82rem; color:var(--sand); line-height:1.8; font-weight:300; max-width:240px; margin-bottom:1.5rem; }
+  .social-links { display:flex; gap:0.6rem; }
+  .social-link { width:36px; height:36px; border:1px solid rgba(204,190,177,0.25); border-radius:50%; display:flex; align-items:center; justify-content:center; color:var(--sand); font-size:0.7rem; font-weight:500; cursor:pointer; transition:border-color 0.2s, color 0.2s; text-decoration:none; }
+  .social-link:hover { border-color:var(--blush); color:var(--blush); }
+  .footer-col h4 { font-size:0.65rem; letter-spacing:0.22em; text-transform:uppercase; color:var(--sand); margin-bottom:1.5rem; }
+  .footer-col a { display:block; font-size:0.82rem; color:rgba(204,190,177,0.65); text-decoration:none; margin-bottom:0.7rem; transition:color 0.2s; }
+  .footer-col a:hover { color:var(--blush); }
+  .footer-bottom { border-top:1px solid rgba(153,126,103,0.2); padding-top:1.5rem; display:flex; justify-content:space-between; align-items:center; }
+  .footer-bottom p { font-size:0.72rem; color:rgba(153,126,103,0.5); }
+  .contact-info { font-size:0.78rem; color:rgba(204,190,177,0.55); line-height:1.9; }
+  .contact-info a { color:rgba(204,190,177,0.55); text-decoration:none; }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeUp { from { opacity:0; transform:translateY(24px); } to { opacity:1; transform:translateY(0); } }
+  @keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
+  @keyframes tickerMove { from { transform:translateX(0); } to { transform:translateX(-50%); } }
+  @keyframes scrollPulse { 0%,100% { opacity:0.3; transform:scaleY(0.8); } 50% { opacity:1; transform:scaleY(1); } }
+  @keyframes spinSlow { from { transform:rotate(0deg); } to { transform:rotate(360deg); } }
+  @keyframes float { 0%,100% { transform:translateY(0); } 50% { transform:translateY(-10px); } }
+  @keyframes leafSway { 0%,100% { transform:rotate(-5deg); } 50% { transform:rotate(5deg); } }
+
+  /* Intersection observer fade-in */
+  .reveal { opacity:0; transform:translateY(30px); transition: opacity 0.7s ease, transform 0.7s ease; }
+  .reveal.visible { opacity:1; transform:translateY(0); }
+  .reveal-delay-1 { transition-delay:0.1s; }
+  .reveal-delay-2 { transition-delay:0.2s; }
+  .reveal-delay-3 { transition-delay:0.3s; }
+  .reveal-delay-4 { transition-delay:0.4s; }
+  .reveal-delay-5 { transition-delay:0.5s; }
+
+  /* ── NOTIFICATION TOAST ── */
+  .toast { position:fixed; bottom:2rem; right:2rem; background:var(--bark); color:var(--blush); padding:0.9rem 1.5rem; font-size:0.82rem; z-index:9999; transform:translateY(100px); opacity:0; transition:all 0.35s; border-left:3px solid var(--blush); letter-spacing:0.05em; }
+  .toast.show { transform:translateY(0); opacity:1; }
+
+  @media (max-width:900px) {
+    header { padding:0 1.5rem; }
+    nav { display:none; }
+    .hero-content { padding:0 2rem; }
+    .about { grid-template-columns:1fr; padding:4rem 2rem; gap:3rem; }
+    .dna-grid { grid-template-columns:repeat(3,1fr); }
+    .products-grid { grid-template-columns:repeat(2,1fr); }
+    .palette-inner { grid-template-columns:1fr; gap:2rem; }
+    .reviews-grid { grid-template-columns:1fr; }
+    .footer-grid { grid-template-columns:1fr 1fr; gap:2.5rem; }
+    .about-tag { display:none; }
+    .about-badge { right:0; }
+  }
+</style>
+</head>
+<body>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<!-- HEADER -->
+<header id="header">
+  <a href="#" class="logo-wrap">
+    <img src="sweet-haven-logo-2.png" alt="Sweet Haven Logo"/>
+    <span class="logo-text">Sweet Haven</span>
+  </a>
+  <nav>
+    <a href="#" class="active">Home</a>
+    <a href="#wallpaper">Wallpaper</a>
+    <a href="#shop">Shop</a>
+    <a href="#decor">Decor</a>
+    <a href="#collections">Collections</a>
+    <a href="#about">About</a>
+  </nav>
+  <div class="header-right">
+    <div class="search-wrap">
+      <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="#997E67" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+      <input type="text" placeholder="Search decor…"/>
+    </div>
+    <button class="icon-btn" title="Account">
+      <svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+    </button>
+    <button class="icon-btn" title="Cart" style="position:relative">
+      <svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+      <span class="cart-badge" id="cartCount">0</span>
+    </button>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg">
+    <!-- Botanical art background -->
+    <svg class="hero-art" viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+      <!-- Large flower cluster right -->
+      <circle cx="1100" cy="200" r="120" fill="#FFDBBB" opacity="0.4"/>
+      <circle cx="1200" cy="350" r="80" fill="#CCBEB1" opacity="0.35"/>
+      <circle cx="1050" cy="400" r="60" fill="#997E67" opacity="0.4"/>
+      <!-- Leaf shapes -->
+      <ellipse cx="1150" cy="250" rx="15" ry="60" fill="#664930" opacity="0.5" transform="rotate(-30 1150 250)" style="animation:leafSway 4s ease-in-out infinite"/>
+      <ellipse cx="1080" cy="180" rx="12" ry="50" fill="#664930" opacity="0.45" transform="rotate(20 1080 180)" style="animation:leafSway 5s ease-in-out infinite 0.5s"/>
+      <ellipse cx="1230" cy="300" rx="10" ry="45" fill="#664930" opacity="0.4" transform="rotate(-15 1230 300)" style="animation:leafSway 3.5s ease-in-out infinite 1s"/>
+      <!-- Petals -->
+      <ellipse cx="1100" cy="200" rx="30" ry="70" fill="#FFDBBB" opacity="0.6" transform="rotate(0 1100 200)"/>
+      <ellipse cx="1100" cy="200" rx="30" ry="70" fill="#FFDBBB" opacity="0.5" transform="rotate(45 1100 200)"/>
+      <ellipse cx="1100" cy="200" rx="30" ry="70" fill="#FFDBBB" opacity="0.5" transform="rotate(90 1100 200)"/>
+      <ellipse cx="1100" cy="200" rx="30" ry="70" fill="#FFDBBB" opacity="0.5" transform="rotate(135 1100 200)"/>
+      <circle cx="1100" cy="200" r="25" fill="#997E67" opacity="0.8"/>
+      <!-- Bottom left botanical -->
+      <ellipse cx="200" cy="800" rx="20" ry="90" fill="#997E67" opacity="0.4" transform="rotate(-20 200 800)" style="animation:leafSway 5s ease-in-out infinite"/>
+      <ellipse cx="260" cy="820" rx="18" ry="75" fill="#664930" opacity="0.4" transform="rotate(10 260 820)"/>
+      <circle cx="180" cy="700" r="50" fill="#CCBEB1" opacity="0.3"/>
+      <!-- Decorative arcs -->
+      <path d="M 900 0 Q 1100 400 900 900" stroke="#CCBEB1" stroke-width="1" fill="none" opacity="0.3"/>
+      <path d="M 950 0 Q 1200 450 950 900" stroke="#997E67" stroke-width="0.5" fill="none" opacity="0.2"/>
+    </svg>
+  </div>
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <p class="hero-eyebrow">✦ Autumn 2026 — The Artisan Living Edit</p>
+    <h1 class="hero-title">Rooms that feel like<br/>a <em>slow exhale.</em></h1>
+    <p class="hero-sub">Hand-picked wallpapers, ceramics, lighting and textiles — crafted in the workshops of Kathmandu, designed for spaces that hold meaning.</p>
+    <div class="hero-btns">
+      <a href="#shop" class="btn-primary">View Collection</a>
+      <a href="#dna" class="btn-outline">Choose Your Style</a>
+    </div>
+  </div>
+  <div class="hero-scroll">
+    <span>Scroll</span>
+    <div class="scroll-line"></div>
+  </div>
+</section>
+
+<!-- STYLE TICKER -->
+<div class="ticker-wrap">
+  <div class="ticker-track" id="ticker">
+    <div class="ticker-item">Classic Style <span class="ticker-dot"></span></div>
+    <div class="ticker-item">Bohemian Style <span class="ticker-dot"></span></div>
+    <div class="ticker-item">Vintage Style <span class="ticker-dot"></span></div>
+    <div class="ticker-item">Minimalist Style <span class="ticker-dot"></span></div>
+    <div class="ticker-item">Floral Style <span class="ticker-dot"></span></div>
+    <div class="ticker-item">Rustic Charm <span class="ticker-dot"></span></div>
+    <div class="ticker-item">Maximalist Living <span class="ticker-dot"></span></div>
+    <div class="ticker-item">Classic Style <span class="ticker-dot"></span></div>
+    <div class="ticker-item">Bohemian Style <span class="ticker-dot"></span></div>
+    <div class="ticker-item">Vintage Style <span class="ticker-dot"></span></div>
+    <div class="ticker-item">Minimalist Style <span class="ticker-dot"></span></div>
+    <div class="ticker-item">Floral Style <span class="ticker-dot"></span></div>
+    <div class="ticker-item">Rustic Charm <span class="ticker-dot"></span></div>
+    <div class="ticker-item">Maximalist Living <span class="ticker-dot"></span></div>
+  </div>
+</div>
+
+<!-- ABOUT -->
+<section class="about" id="about">
+  <div class="about-visual reveal">
+    <span class="about-tag">Our Story</span>
+    <div class="about-frame">
+      <div class="about-frame-inner">
+        <!-- Decorative SVG interior art -->
+        <svg viewBox="0 0 300 400" xmlns="http://www.w3.org/2000/svg">
+          <!-- Room illustration -->
+          <rect width="300" height="400" fill="#f0d9c8"/>
+          <!-- Wallpaper pattern -->
+          <circle cx="40" cy="40" r="18" fill="#997E67" opacity="0.4"/>
+          <circle cx="100" cy="20" r="12" fill="#664930" opacity="0.3"/>
+          <circle cx="160" cy="45" r="15" fill="#997E67" opacity="0.35"/>
+          <circle cx="220" cy="25" r="10" fill="#664930" opacity="0.3"/>
+          <circle cx="275" cy="50" r="16" fill="#997E67" opacity="0.4"/>
+          <ellipse cx="40" cy="40" rx="8" ry="22" fill="#664930" opacity="0.5" transform="rotate(-20 40 40)"/>
+          <ellipse cx="160" cy="45" rx="6" ry="18" fill="#664930" opacity="0.5" transform="rotate(15 160 45)"/>
+          <ellipse cx="100" cy="20" rx="5" ry="16" fill="#664930" opacity="0.4" transform="rotate(-10 100 20)"/>
+          <!-- Vase -->
+          <ellipse cx="150" cy="360" rx="28" ry="12" fill="#997E67" opacity="0.6"/>
+          <path d="M 125 360 Q 122 310 138 290 Q 150 275 162 290 Q 178 310 175 360 Z" fill="#664930" opacity="0.7"/>
+          <ellipse cx="150" cy="290" rx="14" ry="6" fill="#997E67" opacity="0.8"/>
+          <!-- Plant stems from vase -->
+          <path d="M 150 285 Q 140 240 125 200" stroke="#664930" stroke-width="2.5" fill="none" opacity="0.7"/>
+          <path d="M 150 285 Q 155 235 165 195" stroke="#664930" stroke-width="2" fill="none" opacity="0.7"/>
+          <path d="M 150 285 Q 148 245 148 220" stroke="#664930" stroke-width="2" fill="none" opacity="0.7"/>
+          <!-- Leaves -->
+          <ellipse cx="125" cy="200" rx="18" ry="10" fill="#664930" opacity="0.6" transform="rotate(-30 125 200)"/>
+          <ellipse cx="165" cy="195" rx="16" ry="9" fill="#997E67" opacity="0.6" transform="rotate(20 165 195)"/>
+          <ellipse cx="148" cy="220" rx="14" ry="8" fill="#664930" opacity="0.5" transform="rotate(5 148 220)"/>
+          <!-- Flowers -->
+          <circle cx="120" cy="185" r="14" fill="#FFDBBB" opacity="0.8"/>
+          <circle cx="120" cy="185" r="6" fill="#997E67" opacity="0.9"/>
+          <circle cx="168" cy="182" r="11" fill="#CCBEB1" opacity="0.8"/>
+          <circle cx="168" cy="182" r="5" fill="#664930" opacity="0.9"/>
+          <!-- Frame on wall -->
+          <rect x="60" y="100" width="80" height="100" rx="2" fill="#664930" opacity="0.5"/>
+          <rect x="65" y="105" width="70" height="90" rx="1" fill="#FFDBBB" opacity="0.7"/>
+          <circle cx="100" cy="150" r="20" fill="#997E67" opacity="0.5"/>
+          <!-- Hanging lamp -->
+          <line x1="200" y1="0" x2="200" y2="80" stroke="#664930" stroke-width="1.5" opacity="0.5"/>
+          <path d="M 180 80 Q 200 110 220 80 Z" fill="#664930" opacity="0.6"/>
+          <ellipse cx="200" cy="80" rx="22" ry="8" fill="#997E67" opacity="0.6"/>
+        </svg>
+      </div>
+    </div>
+    <div class="about-badge">
+      <span class="about-badge-num">12+</span>
+      <span class="about-badge-lbl">Years of<br/>Artisanship</span>
+    </div>
+  </div>
+  <div class="about-text">
+    <p class="eyebrow reveal">Our Heritage</p>
+    <h2 class="about-title reveal reveal-delay-1">Where craft meets <em>intentional living</em></h2>
+    <p class="about-body reveal reveal-delay-2">Sweet Haven began in a small workshop in Thamel, Kathmandu — where our founder, surrounded by hand-thrown ceramics and ink-dyed textiles, asked a simple question: why should beautiful homes be reserved for a few?</p>
+    <p class="about-body reveal reveal-delay-2">Every piece in our collection is sourced from Nepal's finest artisan communities — weavers in Patan, potters in Bhaktapur, and botanical print-makers who have spent generations perfecting their craft. We do not mass-produce. We curate, with intention.</p>
+    <div class="about-stats reveal reveal-delay-3">
+      <div class="stat"><div class="num">340+</div><div class="lbl">Artisan Pieces</div></div>
+      <div class="stat"><div class="num">28</div><div class="lbl">Craft Villages</div></div>
+      <div class="stat"><div class="num">4,800+</div><div class="lbl">Homes Transformed</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- DNA -->
+<section class="dna-section" id="dna">
+  <p class="section-eyebrow reveal">Discover Your Style</p>
+  <h2 class="section-title reveal reveal-delay-1">What's Your Design <em>DNA?</em></h2>
+  <p class="section-sub reveal reveal-delay-2">Choose a personality and we'll curate your perfect collection.</p>
+  <div class="dna-grid" id="dnaGrid">
+    <div class="dna-card reveal reveal-delay-1" data-style="cozy" onclick="selectDNA(this)">
+      <span class="dna-icon">🕯️</span>
+      <div class="dna-name">Cozy</div>
+      <div class="dna-desc">Warm textures, candlelight tones, and layered comfort for souls who nest.</div>
+    </div>
+    <div class="dna-card reveal reveal-delay-2" data-style="bold" onclick="selectDNA(this)">
+      <span class="dna-icon">⚡</span>
+      <div class="dna-name">Bold</div>
+      <div class="dna-desc">Statement prints, vivid palettes, and pieces that refuse to go unnoticed.</div>
+    </div>
+    <div class="dna-card reveal reveal-delay-3" data-style="serene" onclick="selectDNA(this)">
+      <span class="dna-icon">🌿</span>
+      <div class="dna-name">Serene</div>
+      <div class="dna-desc">Muted hues, organic forms, and calm that you can feel the moment you enter.</div>
+    </div>
+    <div class="dna-card reveal reveal-delay-4" data-style="luxe" onclick="selectDNA(this)">
+      <span class="dna-icon">✦</span>
+      <div class="dna-name">Luxe</div>
+      <div class="dna-desc">Gilded edges, velvet drapes, and the quiet confidence of a well-appointed room.</div>
+    </div>
+    <div class="dna-card reveal reveal-delay-5" data-style="rustic" onclick="selectDNA(this)">
+      <span class="dna-icon">🪵</span>
+      <div class="dna-name">Rustic</div>
+      <div class="dna-desc">Rough timber, hand-thrown clay, and earthy tones rooted in honest materials.</div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURED PIECES -->
+<section class="featured" id="shop">
+  <p class="section-eyebrow reveal">Trending This Season</p>
+  <h2 class="section-title reveal reveal-delay-1">Featured <em>Pieces</em></h2>
+  <p class="section-sub reveal reveal-delay-2">Handpick your style — each piece is one of a kind.</p>
+  <div class="products-grid" id="productsGrid">
+    <!-- Products injected by JS -->
+  </div>
+</section>
+
+<!-- MOOD PALETTE -->
+<section class="palette-section" id="collections">
+  <p class="section-eyebrow reveal">Unique Feature</p>
+  <h2 class="section-title reveal reveal-delay-1">Build Your Room <em>Palette</em></h2>
+  <p class="section-sub reveal reveal-delay-2">Select colours that feel like your ideal room. We'll suggest décor that harmonises with your palette.</p>
+  <div class="palette-inner">
+    <div>
+      <p class="palette-left-desc reveal">Our Palette Builder helps you discover which colours speak to you — and then builds a curated product list around your choices. Think of it as colour therapy, but for your living room.</p>
+      <div class="palette-colors reveal reveal-delay-1" id="paletteColors">
+        <!-- Swatches injected by JS -->
+      </div>
+    </div>
+    <div class="palette-result reveal reveal-delay-2">
+      <h3>Your Palette</h3>
+      <p id="paletteDesc">Select colours below to begin building your personal room palette.</p>
+      <div class="selected-swatches" id="selectedSwatches"></div>
+      <div class="hex-codes" id="hexCodes"></div>
+      <button class="btn-primary" onclick="showToast('Opening full Palette Builder…')">Open Full Palette Builder →</button>
+    </div>
+  </div>
+</section>
+
+<!-- REVIEWS -->
+<section class="reviews" id="reviews">
+  <p class="section-eyebrow reveal">From Our Community</p>
+  <h2 class="section-title reveal reveal-delay-1">Homes We've <em>Transformed</em></h2>
+  <div class="reviews-grid">
+    <div class="review-card reveal reveal-delay-1">
+      <div class="review-quote">"</div>
+      <p class="review-text">The wallpaper I ordered transformed my entire living room. The quality is unlike anything I've found locally — it feels like breathing art every morning.</p>
+      <div class="review-author">
+        <div class="review-avatar">PR</div>
+        <div>
+          <div class="review-name">Priya Rana</div>
+          <div class="review-location">Kathmandu, Nepal</div>
+          <div class="review-stars">★★★★★</div>
+        </div>
+      </div>
+    </div>
+    <div class="review-card reveal reveal-delay-2">
+      <div class="review-quote">"</div>
+      <p class="review-text">The Style DNA quiz actually worked. I'd been struggling to define my aesthetic for months — Sweet Haven nailed it in 3 clicks and built me a cart I actually loved.</p>
+      <div class="review-author">
+        <div class="review-avatar">SK</div>
+        <div>
+          <div class="review-name">Shreya KC</div>
+          <div class="review-location">Pokhara, Nepal</div>
+          <div class="review-stars">★★★★★</div>
+        </div>
+      </div>
+    </div>
+    <div class="review-card reveal reveal-delay-3">
+      <div class="review-quote">"</div>
+      <p class="review-text">I bought the bohemian throw set and handwoven cushion covers — the packaging alone felt like a gift. Premium experience from start to finish.</p>
+      <div class="review-author">
+        <div class="review-avatar">AM</div>
+        <div>
+          <div class="review-name">Ankit Maharjan</div>
+          <div class="review-location">Bhaktapur, Nepal</div>
+          <div class="review-stars">★★★★★</div>
+        </div>
+      </div>
+    </div>
+    <div class="review-card reveal reveal-delay-1">
+      <div class="review-quote">"</div>
+      <p class="review-text">Every piece arrived beautifully wrapped with a handwritten note from the artisan. That human touch is rare in online shopping — Sweet Haven gets it right.</p>
+      <div class="review-author">
+        <div class="review-avatar">NS</div>
+        <div>
+          <div class="review-name">Nisha Shrestha</div>
+          <div class="review-location">Lalitpur, Nepal</div>
+          <div class="review-stars">★★★★★</div>
+        </div>
+      </div>
+    </div>
+    <div class="review-card reveal reveal-delay-2">
+      <div class="review-quote">"</div>
+      <p class="review-text">The Mood Palette Builder helped me choose colours I never would have tried myself. My bedroom now looks like a boutique hotel. I get compliments every week.</p>
+      <div class="review-author">
+        <div class="review-avatar">RG</div>
+        <div>
+          <div class="review-name">Rohan Gurung</div>
+          <div class="review-location">Butwal, Nepal</div>
+          <div class="review-stars">★★★★☆</div>
+        </div>
+      </div>
+    </div>
+    <div class="review-card reveal reveal-delay-3">
+      <div class="review-quote">"</div>
+      <p class="review-text">I gifted a set of ceramic vases to my mother — she thought I'd brought them from abroad. That is the highest praise I can give. Exceptional craftsmanship.</p>
+      <div class="review-author">
+        <div class="review-avatar">BT</div>
+        <div>
+          <div class="review-name">Bina Tamang</div>
+          <div class="review-location">Dharan, Nepal</div>
+          <div class="review-stars">★★★★★</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <span class="logo-text">Sweet Haven</span>
+      <p>Handcrafted home décor from the workshops of Kathmandu — designed for spaces that hold meaning.</p>
+      <div class="social-links">
+        <a class="social-link" href="#">IG</a>
+        <a class="social-link" href="#">FB</a>
+        <a class="social-link" href="#">PT</a>
+        <a class="social-link" href="#">YT</a>
+      </div>
+    </div>
+    <div class="footer-col">
+      <h4>Shop</h4>
+      <a href="#">Wallpapers</a>
+      <a href="#">Décor Items</a>
+      <a href="#">Collections</a>
+      <a href="#">New Arrivals</a>
+      <a href="#">Sale</a>
+    </div>
+    <div class="footer-col">
+      <h4>Explore</h4>
+      <a href="#">Style DNA Quiz</a>
+      <a href="#">Palette Builder</a>
+      <a href="#">Room Stories</a>
+      <a href="#">Our Artisans</a>
+      <a href="#">Décor Journal</a>
+    </div>
+    <div class="footer-col">
+      <h4>Help</h4>
+      <a href="#">Contact Us</a>
+      <a href="#">FAQ</a>
+      <a href="#">Shipping & Returns</a>
+      <a href="#">My Account</a>
+      <a href="#">Admin</a>
+      <div class="contact-info" style="margin-top:1.5rem;">
+        <div>Thamel, Kathmandu, Nepal</div>
+        <div><a href="mailto:hello@sweethaven.np">hello@sweethaven.np</a></div>
+        <div><a href="tel:+97715550123">+977 1 555 0123</a></div>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2026 Sweet Haven Home Decor. All rights reserved.</p>
+    <p>Made with care in Kathmandu, Nepal ♥</p>
+  </div>
+</footer>
+
+<script>
+// ── PRODUCTS DATA ──
+const products = [
+  {
+    name: "Peacock Floral Wallpaper",
+    price: 7000, original: 9000,
+    badge: "Sale",
+    color: "#3a7d5e",
+    accent: "#FFDBBB",
+    svg: `<svg viewBox="0 0 200 260" xmlns="http://www.w3.org/2000/svg">
+      <rect width="200" height="260" fill="#1a4a35"/>
+      <circle cx="100" cy="100" r="55" fill="#2d7a5a" opacity="0.7"/>
+      <ellipse cx="100" cy="100" rx="18" ry="45" fill="#FFDBBB" opacity="0.8"/>
+      <ellipse cx="100" cy="100" rx="18" ry="45" fill="#FFDBBB" opacity="0.7" transform="rotate(45 100 100)"/>
+      <ellipse cx="100" cy="100" rx="18" ry="45" fill="#FFDBBB" opacity="0.7" transform="rotate(90 100 100)"/>
+      <ellipse cx="100" cy="100" rx="18" ry="45" fill="#FFDBBB" opacity="0.7" transform="rotate(135 100 100)"/>
+      <circle cx="100" cy="100" r="20" fill="#1a6b8a"/>
+      <circle cx="100" cy="100" r="12" fill="#2a9d8f"/>
+      <circle cx="100" cy="100" r="5" fill="#FFDBBB"/>
+      <circle cx="72" cy="72" r="8" fill="#e9c46a" opacity="0.7"/>
+      <circle cx="128" cy="72" r="8" fill="#e9c46a" opacity="0.7"/>
+      <circle cx="72" cy="128" r="8" fill="#e9c46a" opacity="0.7"/>
+      <circle cx="128" cy="128" r="8" fill="#e9c46a" opacity="0.7"/>
+      <ellipse cx="40" cy="200" rx="12" ry="30" fill="#3a7d5e" opacity="0.8" transform="rotate(-20 40 200)"/>
+      <ellipse cx="160" cy="210" rx="10" ry="28" fill="#3a7d5e" opacity="0.8" transform="rotate(15 160 210)"/>
+    </svg>`
+  },
+  {
+    name: "Hand-Thrown Ceramic Vase",
+    price: 12500, original: 15000,
+    badge: "Artisan",
+    color: "#c4956a",
+    accent: "#664930",
+    svg: `<svg viewBox="0 0 200 260" xmlns="http://www.w3.org/2000/svg">
+      <rect width="200" height="260" fill="#f5e6d8"/>
+      <ellipse cx="100" cy="240" rx="45" ry="14" fill="#c4956a" opacity="0.5"/>
+      <path d="M 70 240 Q 55 180 65 130 Q 75 90 100 80 Q 125 90 135 130 Q 145 180 130 240 Z" fill="#997E67"/>
+      <path d="M 72 235 Q 57 178 67 130 Q 77 92 100 82" stroke="#CCBEB1" stroke-width="1.5" fill="none" opacity="0.6"/>
+      <ellipse cx="100" cy="82" rx="28" ry="10" fill="#c4956a"/>
+      <path d="M 80 180 Q 70 170 75 155 Q 90 145 105 158" stroke="#FFDBBB" stroke-width="1.5" fill="none" opacity="0.7"/>
+      <circle cx="95" cy="155" r="5" fill="#FFDBBB" opacity="0.6"/>
+      <path d="M 110 140 Q 120 130 115 120 Q 100 112 90 122" stroke="#FFDBBB" stroke-width="1.2" fill="none" opacity="0.6"/>
+      <ellipse cx="60" cy="50" rx="15" ry="6" fill="#997E67" opacity="0.4" transform="rotate(-20 60 50)"/>
+      <ellipse cx="140" cy="40" rx="12" ry="5" fill="#997E67" opacity="0.4" transform="rotate(15 140 40)"/>
+    </svg>`
+  },
+  {
+    name: "Jute Pendant Lamp",
+    price: 11000, original: null,
+    badge: "New",
+    color: "#7a5c3a",
+    accent: "#CCBEB1",
+    svg: `<svg viewBox="0 0 200 260" xmlns="http://www.w3.org/2000/svg">
+      <rect width="200" height="260" fill="#f0e4d4"/>
+      <line x1="100" y1="0" x2="100" y2="50" stroke="#5a3e28" stroke-width="2"/>
+      <line x1="85" y1="0" x2="85" y2="45" stroke="#5a3e28" stroke-width="1.5"/>
+      <line x1="115" y1="0" x2="115" y2="45" stroke="#5a3e28" stroke-width="1.5"/>
+      <ellipse cx="100" cy="165" rx="55" ry="18" fill="#8B6914" opacity="0.6"/>
+      <path d="M 55 155 Q 45 100 65 55 Q 80 40 100 40 Q 120 40 135 55 Q 155 100 145 155 Z" fill="#a07830" opacity="0.85"/>
+      <path d="M 60 140 Q 52 100 68 60" stroke="#c4956a" stroke-width="1" fill="none" opacity="0.5"/>
+      <path d="M 75 150 Q 67 105 78 65" stroke="#c4956a" stroke-width="1" fill="none" opacity="0.5"/>
+      <path d="M 90 155 Q 85 108 90 68" stroke="#c4956a" stroke-width="1" fill="none" opacity="0.5"/>
+      <path d="M 110 155 Q 115 108 110 68" stroke="#c4956a" stroke-width="1" fill="none" opacity="0.5"/>
+      <path d="M 125 150 Q 133 105 122 65" stroke="#c4956a" stroke-width="1" fill="none" opacity="0.5"/>
+      <path d="M 140 140 Q 148 100 132 60" stroke="#c4956a" stroke-width="1" fill="none" opacity="0.5"/>
+      <ellipse cx="100" cy="47" rx="32" ry="10" fill="#8B6914" opacity="0.8"/>
+      <circle cx="100" cy="130" r="15" fill="#fff9e6" opacity="0.6"/>
+      <circle cx="100" cy="130" r="8" fill="#ffe082" opacity="0.8"/>
+      <ellipse cx="55" cy="200" rx="18" ry="6" fill="#997E67" opacity="0.3" transform="rotate(-15 55 200)"/>
+      <ellipse cx="150" cy="210" rx="15" ry="5" fill="#997E67" opacity="0.3" transform="rotate(10 150 210)"/>
+    </svg>`
+  },
+  {
+    name: "Hexagon Wall Shelves",
+    price: 18000, original: 20000,
+    badge: "Sale",
+    color: "#3d3d3d",
+    accent: "#997E67",
+    svg: `<svg viewBox="0 0 200 260" xmlns="http://www.w3.org/2000/svg">
+      <rect width="200" height="260" fill="#e8ddd3"/>
+      <g opacity="0.9">
+        <polygon points="100,30 128,46 128,78 100,94 72,78 72,46" fill="none" stroke="#3d3d3d" stroke-width="6"/>
+        <polygon points="145,80 173,96 173,128 145,144 117,128 117,96" fill="none" stroke="#3d3d3d" stroke-width="6"/>
+        <polygon points="55,80 83,96 83,128 55,144 27,128 27,96" fill="none" stroke="#3d3d3d" stroke-width="6"/>
+        <polygon points="100,130 128,146 128,178 100,194 72,178 72,146" fill="none" stroke="#3d3d3d" stroke-width="6"/>
+      </g>
+      <circle cx="100" cy="62" r="12" fill="#997E67" opacity="0.7"/>
+      <rect x="135" y="110" width="12" height="18" rx="2" fill="#CCBEB1" opacity="0.8"/>
+      <rect x="152" y="114" width="8" height="14" rx="1" fill="#664930" opacity="0.6"/>
+      <circle cx="55" cy="112" r="10" fill="#997E67" opacity="0.6"/>
+      <rect x="45" y="118" width="20" height="4" rx="1" fill="#664930" opacity="0.5"/>
+      <ellipse cx="100" cy="172" rx="10" ry="14" fill="#664930" opacity="0.5"/>
+      <circle cx="100" cy="157" r="6" fill="#CCBEB1" opacity="0.7"/>
+      <line x1="140" y1="260" x2="100" y2="194" stroke="#3d3d3d" stroke-width="2" opacity="0.3"/>
+    </svg>`
+  },
+  {
+    name: "Wooden Wall Art Panel",
+    price: 29000, original: null,
+    badge: "Artisan",
+    color: "#8B6914",
+    accent: "#FFDBBB",
+    svg: `<svg viewBox="0 0 200 260" xmlns="http://www.w3.org/2000/svg">
+      <rect width="200" height="260" fill="#f5ede0"/>
+      <rect x="25" y="20" width="150" height="190" rx="4" fill="#c4956a" opacity="0.3"/>
+      <rect x="30" y="25" width="140" height="180" rx="3" fill="#e8c99a" opacity="0.5"/>
+      <circle cx="100" cy="115" r="60" fill="none" stroke="#8B6914" stroke-width="2" opacity="0.5"/>
+      <circle cx="100" cy="115" r="45" fill="none" stroke="#8B6914" stroke-width="1.5" opacity="0.4"/>
+      <ellipse cx="100" cy="115" rx="18" ry="50" fill="#8B6914" opacity="0.3" transform="rotate(0 100 115)"/>
+      <ellipse cx="100" cy="115" rx="18" ry="50" fill="#8B6914" opacity="0.25" transform="rotate(36 100 115)"/>
+      <ellipse cx="100" cy="115" rx="18" ry="50" fill="#8B6914" opacity="0.25" transform="rotate(72 100 115)"/>
+      <ellipse cx="100" cy="115" rx="18" ry="50" fill="#8B6914" opacity="0.25" transform="rotate(108 100 115)"/>
+      <ellipse cx="100" cy="115" rx="18" ry="50" fill="#8B6914" opacity="0.25" transform="rotate(144 100 115)"/>
+      <circle cx="100" cy="115" r="20" fill="#c4956a" opacity="0.8"/>
+      <circle cx="100" cy="115" r="10" fill="#8B6914" opacity="0.9"/>
+      <line x1="62" y1="218" x2="62" y2="230" stroke="#8B6914" stroke-width="2" opacity="0.4"/>
+      <line x1="138" y1="218" x2="138" y2="230" stroke="#8B6914" stroke-width="2" opacity="0.4"/>
+    </svg>`
+  },
+  {
+    name: "Bohemian Cushion Set",
+    price: 8500, original: 10000,
+    badge: "Set of 3",
+    color: "#b5451b",
+    accent: "#CCBEB1",
+    svg: `<svg viewBox="0 0 200 260" xmlns="http://www.w3.org/2000/svg">
+      <rect width="200" height="260" fill="#fdf0e6"/>
+      <rect x="20" y="160" width="160" height="95" rx="18" fill="#664930" opacity="0.8"/>
+      <rect x="22" y="162" width="156" height="91" rx="16" fill="#997E67" opacity="0.5"/>
+      <circle cx="100" cy="205" r="25" fill="none" stroke="#FFDBBB" stroke-width="2" opacity="0.6"/>
+      <ellipse cx="100" cy="205" rx="8" ry="20" fill="#FFDBBB" opacity="0.4"/>
+      <ellipse cx="100" cy="205" rx="8" ry="20" fill="#FFDBBB" opacity="0.4" transform="rotate(60 100 205)"/>
+      <ellipse cx="100" cy="205" rx="8" ry="20" fill="#FFDBBB" opacity="0.4" transform="rotate(120 100 205)"/>
+      <circle cx="100" cy="205" r="6" fill="#FFDBBB" opacity="0.8"/>
+      <rect x="35" y="90" width="130" height="80" rx="14" fill="#b5451b" opacity="0.85"/>
+      <rect x="37" y="92" width="126" height="76" rx="12" fill="#c96a3a" opacity="0.4"/>
+      <line x1="35" y1="125" x2="165" y2="125" stroke="#FFDBBB" stroke-width="1.5" opacity="0.3"/>
+      <line x1="35" y1="112" x2="165" y2="112" stroke="#FFDBBB" stroke-width="1" opacity="0.2"/>
+      <line x1="35" y1="138" x2="165" y2="138" stroke="#FFDBBB" stroke-width="1" opacity="0.2"/>
+      <rect x="55" y="25" width="90" height="72" rx="12" fill="#CCBEB1" opacity="0.9"/>
+      <rect x="57" y="27" width="86" height="68" rx="10" fill="#e8c4aa" opacity="0.6"/>
+      <circle cx="100" cy="60" r="18" fill="none" stroke="#997E67" stroke-width="2" opacity="0.5"/>
+      <path d="M 85 60 Q 100 45 115 60 Q 100 75 85 60 Z" fill="#997E67" opacity="0.4"/>
+    </svg>`
+  }
+];
+
+let cartCount = 0;
+
+function renderProducts() {
+  const grid = document.getElementById('productsGrid');
+  grid.innerHTML = products.map((p, i) => `
+    <div class="product-card reveal reveal-delay-${(i%3)+1}">
+      <div class="product-img">
+        <div class="product-img-inner">${p.svg}</div>
+        ${p.badge ? `<span class="product-badge">${p.badge}</span>` : ''}
+        <button class="wishlist-btn" onclick="showToast('Added to wishlist ♥')">♥</button>
+      </div>
+      <div class="product-info">
+        <div class="product-name">${p.name}</div>
+        <div class="product-prices">
+          <span class="price-new">Rs. ${p.price.toLocaleString()}</span>
+          ${p.original ? `<span class="price-old">Rs. ${p.original.toLocaleString()}</span>` : ''}
+          ${p.original ? `<span class="price-save">Save ${Math.round((1-p.price/p.original)*100)}%</span>` : ''}
+        </div>
+        <button class="add-cart-btn" onclick="addToCart('${p.name}')">Add to Cart</button>
+      </div>
+    </div>
+  `).join('');
+  observeReveal();
+}
+
+function addToCart(name) {
+  cartCount++;
+  document.getElementById('cartCount').textContent = cartCount;
+  showToast(`"${name}" added to cart 🛍️`);
+}
+
+function selectDNA(el) {
+  document.querySelectorAll('.dna-card').forEach(c => c.classList.remove('active'));
+  el.classList.add('active');
+  const style = el.dataset.style;
+  const msgs = {
+    cozy: 'Curating warm, cosy pieces for you…',
+    bold: 'Loading statement pieces for bold spaces…',
+    serene: 'Finding calm, organic pieces for you…',
+    luxe: 'Selecting gilded and luxurious picks…',
+    rustic: 'Gathering earthy, artisan-crafted pieces…'
+  };
+  showToast(msgs[style] || 'Style selected!');
+}
+
+// ── PALETTE ──
+const swatches = [
+  { hex:'#C4875A', name:'Terracotta' },
+  { hex:'#E8A87C', name:'Peach Sand' },
+  { hex:'#7EB8A0', name:'Sage Mist' },
+  { hex:'#B8A99A', name:'Warm Stone' },
+  { hex:'#6B9EC7', name:'Dusk Blue' },
+  { hex:'#D4B8B0', name:'Rose Blush' },
+  { hex:'#A0836A', name:'Clay Brown' },
+  { hex:'#2C2416', name:'Dark Earth' },
+  { hex:'#F5EAD8', name:'Cream' },
+  { hex:'#9B8EA0', name:'Mauve' }
+];
+let selectedColors = [];
+
+function renderPalette() {
+  const wrap = document.getElementById('paletteColors');
+  wrap.innerHTML = swatches.map(s => `
+    <div class="palette-swatch" style="background:${s.hex}" title="${s.name}" onclick="toggleSwatch('${s.hex}','${s.name}',this)"></div>
+  `).join('');
+}
+
+function toggleSwatch(hex, name, el) {
+  const idx = selectedColors.findIndex(c => c.hex === hex);
+  if (idx > -1) { selectedColors.splice(idx,1); el.classList.remove('selected'); }
+  else if (selectedColors.length < 4) { selectedColors.push({hex,name}); el.classList.add('selected'); }
+  else { showToast('Maximum 4 colours. Remove one first.'); return; }
+  updatePaletteResult();
+}
+
+function updatePaletteResult() {
+  const swatchWrap = document.getElementById('selectedSwatches');
+  const hexWrap = document.getElementById('hexCodes');
+  const desc = document.getElementById('paletteDesc');
+  swatchWrap.innerHTML = selectedColors.map(c => `<div class="sel-swatch" style="background:${c.hex}" title="${c.name}"></div>`).join('');
+  hexWrap.innerHTML = selectedColors.map(c => `<span class="hex-code">${c.hex}</span>`).join('');
+  if (selectedColors.length === 0) desc.textContent = 'Select colours below to begin building your personal room palette.';
+  else if (selectedColors.length < 4) desc.textContent = `${selectedColors.length} colour${selectedColors.length>1?'s':''} selected. Add ${4-selectedColors.length} more or open the full builder.`;
+  else desc.textContent = '4 colours selected. Open the full Palette Builder to explore matching products.';
+}
+
+// ── TOAST ──
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3000);
+}
+
+// ── REVEAL OBSERVER ──
+function observeReveal() {
+  const els = document.querySelectorAll('.reveal:not(.visible)');
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => { if(e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); } });
+  }, { threshold: 0.1 });
+  els.forEach(el => obs.observe(el));
+}
+
+// ── HEADER SCROLL ──
+window.addEventListener('scroll', () => {
+  const h = document.getElementById('header');
+  if(window.scrollY > 60) h.style.background = 'rgba(255,246,238,0.98)';
+  else h.style.background = 'rgba(255,246,238,0.92)';
+});
+
+// ── INIT ──
+renderProducts();
+renderPalette();
+observeReveal();
+</script>
+</body>
+</html>
