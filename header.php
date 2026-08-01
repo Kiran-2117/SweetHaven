@@ -1,3 +1,9 @@
+<?php
+session_start();
+$currentPage= basename($_SERVER['PHP_SELF']);
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -146,6 +152,55 @@ nav a:hover,nav a.active{
     align-items: center;
     justify-content: center;
 }
+.login-btn{
+    background: var(--wine);
+    color: white;
+    text-decoration: none;
+    padding: 12px 28px;
+    border-radius: 12px;
+    font-family: 'Jost',sans-serif;
+}
+.account-menu{
+    position: relative;
+}
+
+.dropdown-menu{
+    display: none;
+    position: absolute;
+    top: 20px;
+    right: 0;
+    width: 130px;
+    
+    background: rgb(255, 232, 250);
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0,0,0,.2);
+    overflow: hidden;
+    z-index: 1000;
+}
+
+.dropdown-menu.show{
+    display: block;
+}
+
+.user-name{
+    padding: 12px;
+    font-weight: bold;
+    border-bottom: 1px solid #ddd;
+    color: var(--wine);
+}
+
+.dropdown-menu a{
+    display: block;
+    padding: 12px;
+    color: var(--dark);
+    text-decoration: none;
+    transition: .3s;
+}
+
+.dropdown-menu a:hover{
+    background: var(--wine);
+    color: var(--white);
+}
 
     </style>
 </head>
@@ -158,12 +213,12 @@ nav a:hover,nav a.active{
             <span class="logo-text">Sweet Haven</span>
         </a>
     <nav>
-        <a href="#" class="active">Home</a>
-        <a href="wallpaper.php">Wallpaper</a>
-        <a href="#shop">Shop</a>
-        <a href="#decor">Decor</a>
-        <a href="#collections">Collections</a>
-        <a href="#about">About</a>
+        <a href="home.php" class="<?= ($currentPage == 'home.php') ? 'active' : '' ?>">Home</a>
+        <a href="wallpaper.php" class ="<?= ($currentPage == 'wallpaper.php') ? 'active' : '' ?>">Wallpaper</a>
+        <a href="shop.php" class="<?= ($currentPage == 'shop.php') ? 'active' : '' ?>">Shop</a>
+        <a href="decor.php" class="<?= ($currentPage == 'decor.php') ? 'active' : '' ?>">Decor</a>
+        <a href="collection.php" class="<?= ($currentPage == 'collections.php') ? 'active' : '' ?>">Collections</a>
+        <a href="about.php" class="<?= ($currentPage == 'about.php') ? 'active' : '' ?>">About</a>
     </nav>
     <div class="header-right">
         <div class="search-box">
@@ -173,17 +228,62 @@ nav a:hover,nav a.active{
     <input type="text" name="" id="" placeholder="Search decor...">
     </div>
 
-    <button class="icon-btn" title="Account">
-        <i class="fa-thin fa-circle-user" style="color: rgb(99, 230, 190);"></i>
-    </button>
 
     <button class="icon-btn" title="cart" style="position: relative;">
         <svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
       <span class="cart-badge" id="cartCount">0</span>
     </button>
+    
 
+    <div class="account-menu">
+
+<?php if(isset($_SESSION['user_id'])) { ?>
+
+    <button class="icon-btn" id="accountBtn" title="Account">
+        <i class="fa-solid fa-circle-user"></i>
+    </button>
+
+    <div class="dropdown-menu" id="accountDropdown">
+
+        <div class="user-name">
+            <?= htmlspecialchars($_SESSION['full_name']) ?>
+        </div>
+
+        <a href="profile.php">Profile</a>
+        <a href="logout.php">Logout</a>
+
+    </div>
+
+<?php } else { ?>
+
+    <a href="login.php" class="login-btn">
+        Login
+    </a>
+
+<?php } ?>
+
+</div>
     
 </div>
 </header>
+
+<script>
+   
+const accountBtn = document.getElementById("accountBtn");
+const accountDropdown = document.getElementById("accountDropdown");
+
+if(accountBtn){
+    accountBtn.addEventListener("click", function(e){
+        e.stopPropagation();
+        accountDropdown.classList.toggle("show");
+
+    });
+    document.addEventListener("click", function(){
+        accountDropdown.classList.remove("show");
+    });
+}
+
+</script>
+
 </body>
 </html>
