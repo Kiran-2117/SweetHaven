@@ -2,41 +2,68 @@
 session_start();
 include "database/db_connect.php";
 
-$loginMsg= "";
+// ---- Predefined admin credentials ----
+define("ADMIN_EMAIL", "admin@sweethaven.com");
+define("ADMIN_PASSWORD_HASH", '$2y$10$lQBuQzz8/aCj2lqNGfop.uRpPOHyGYdMtdg5FCA0Yle5lgDgT1Upi'); // generate with password_hash()
 
-if($_SERVER["REQUEST_METHOD"]=="POST") {
-  
-    $email= trim($_POST['email']);
-    $password= $_POST['password'];
 
-    $stmt= $conn->prepare("SELECT id, full_name, password FROM users WHERE email = ?");
-    $stmt->bind_param("s", $email);
-    $stmt->execute();
+$loginMsg = "";
 
-    $result= $stmt->get_result();
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
-    if ($result->num_rows > 0) {
+    $email = trim($_POST['email']);
+    $password = $_POST['password'];
 
-    $row = $result->fetch_assoc();   
+    if (strcasecmp($email, ADMIN_EMAIL) === 0) {
 
-    if (password_verify($password, $row["password"])) {
-        
-      
-      $_SESSION["user_id"]= $row["id"];
-      $_SESSION["full_name"]= $row["full_name"];
+        // ---- This is the admin email, check against the admin password only ----
+        if (password_verify($password, ADMIN_PASSWORD_HASH)) {
 
-      header("Location:land.php");
-      exit();
+            session_regenerate_id(true);
 
-      }else{
-        $loginMsg="Incorrect password!";
-      }
-    }else{
-      $loginMsg="No account found with this email. Please sign up first.";
+            $_SESSION["admin_id"] = true;
+            $_SESSION["admin_email"] = ADMIN_EMAIL;
+
+            header("Location: admin/dashboard.php");
+            exit();
+
+        } else {
+            $loginMsg = "Incorrect admin password!";
+        }
+
+    } else {
+
+        // ---- Not the admin email, check against the users table ----
+        $stmt = $conn->prepare("SELECT id, full_name, password FROM users WHERE email = ?");
+        $stmt->bind_param("s", $email);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        if ($result->num_rows > 0) {
+
+            $row = $result->fetch_assoc();
+
+            if (password_verify($password, $row["password"])) {
+
+                session_regenerate_id(true);
+
+                $_SESSION["user_id"] = $row["id"];
+                $_SESSION["full_name"] = $row["full_name"];
+
+                header("Location: home.php");
+                exit();
+
+            } else {
+                $loginMsg = "Incorrect password!";
+            }
+
+        } else {
+            $loginMsg = "No account found with this email. Please sign up first.";
+        }
+
+        $stmt->close();
     }
-    $stmt->close();
-  }
-
+}
 ?>
 
 
