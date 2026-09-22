@@ -1,6 +1,25 @@
 <?php
-session_start();
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 $currentPage= basename($_SERVER['PHP_SELF']);
+
+// ---- Work out the cart badge count for the header (0 if not logged in) ----
+$headerCartCount = 0;
+if (isset($_SESSION['user_id'])) {
+    include_once __DIR__ . '/database/db_connect.php';
+    $headerUserId = (int) $_SESSION['user_id'];
+
+    $headerCartSql = "SELECT SUM(ci.quantity) AS total
+                       FROM cart c
+                       JOIN cart_items ci ON ci.cart_id = c.cart_id
+                       WHERE c.id = '$headerUserId' AND c.status = 'active'";
+    $headerCartResult = mysqli_query($conn, $headerCartSql);
+    if ($headerCartResult) {
+        $headerCartRow = mysqli_fetch_assoc($headerCartResult);
+        $headerCartCount = $headerCartRow['total'] ? (int) $headerCartRow['total'] : 0;
+    }
+}
 ?>
 
 
@@ -9,7 +28,8 @@ $currentPage= basename($_SERVER['PHP_SELF']);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.3.0/css/all.min.css" integrity="sha512-ApSLB1Pd3/bZN8fWB/RG9YhN/7bd9Hkf3AGaE2mPfebjrxagjuBtx2GcgdqIlJkUzwylBo61r9Xa9NmgBI0swA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <title>Header</title>
 
     <style>
         :root{
@@ -215,9 +235,9 @@ nav a:hover,nav a.active{
     <nav>
         <a href="home.php" class="<?= ($currentPage == 'home.php') ? 'active' : '' ?>">Home</a>
         <a href="wallpaper.php" class ="<?= ($currentPage == 'wallpaper.php') ? 'active' : '' ?>">Wallpaper</a>
-        <a href="shop.php" class="<?= ($currentPage == 'shop.php') ? 'active' : '' ?>">Shop</a>
+        <!-- <a href="shop.php" class="<?= ($currentPage == 'shop.php') ? 'active' : '' ?>">Shop</a> -->
         <a href="decor.php" class="<?= ($currentPage == 'decor.php') ? 'active' : '' ?>">Decor</a>
-        <a href="collection.php" class="<?= ($currentPage == 'collections.php') ? 'active' : '' ?>">Collections</a>
+        <a href="collections.php" class="<?= ($currentPage == 'collections.php') ? 'active' : '' ?>">Collections</a>
         <a href="about.php" class="<?= ($currentPage == 'about.php') ? 'active' : '' ?>">About</a>
     </nav>
     <div class="header-right">
@@ -229,17 +249,17 @@ nav a:hover,nav a.active{
     </div>
 
 
-    <button class="icon-btn" title="cart" style="position: relative;">
+    <a class="icon-btn" title="Cart" href="cart.php" style="position: relative;">
         <svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
-      <span class="cart-badge" id="cartCount">0</span>
-    </button>
+      <span class="cart-badge" id="cartCount"><?= $headerCartCount ?></span>
+    </a>
     
 
     <div class="account-menu">
 
 <?php if(isset($_SESSION['user_id'])) { ?>
 
-    <button class="icon-btn" id="accountBtn" title="Account">
+    <button class="icon-btn" id="accountBtn" title="Setting">
         <i class="fa-solid fa-circle-user"></i>
     </button>
 
@@ -249,7 +269,7 @@ nav a:hover,nav a.active{
             <?= htmlspecialchars($_SESSION['full_name']) ?>
         </div>
 
-        <a href="profile.php">Profile</a>
+        <a href="profile.php"><i class="fa-solid fa-circle-user"></i>Profile</a>
         <a href="logout.php">Logout</a>
 
     </div>
@@ -266,6 +286,8 @@ nav a:hover,nav a.active{
     
 </div>
 </header>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="assets/css/cart.js"></script>
 
 <script>
    

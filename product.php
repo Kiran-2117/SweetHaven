@@ -139,7 +139,12 @@ if ($product) {
     <form action="cart.php" method="POST">
         <input type="hidden" name="product_id" value="<?php echo $product['product_id']; ?>">
         <input type="hidden" name="qty" id="qtyMirror1" value="1">
-        <button type="submit" class="btn btn-secondary btn-large"><i class="fa-solid fa-bag-shopping"></i>  Add to Cart</button>
+        <button type="submit" class="btn btn-secondary btn-large 
+        add-to-cart-btn"
+        data-id="<?php echo $product['product_id']; ?>"
+        data-type="product"
+        data-qty-input="qty"><i class="fa-solid fa-bag-shopping"></i>  Add to Cart
+    </button>
     </form>
 
     <form action="checkout.php" method="POST">

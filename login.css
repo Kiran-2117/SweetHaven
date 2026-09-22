@@ -257,3 +257,20 @@ body{
   .auth-brand {min-height: 260px; }
   .auth-card { margin: -2.5rem 1rem 1.5rem; }
 }
+
+/* Hide Microsoft Edge's built-in password reveal icon */
+input[type="password"]::-ms-reveal,
+input[type="password"]::-ms-clear {
+    display: none;
+}
+
+/* Hide the reveal button in Chromium browsers */
+input::-webkit-credentials-auto-fill-button {
+    visibility: hidden;
+    display: none !important;
+}
+
+/* Ensure enough space for your custom eye icon */
+.field input[type="password"]{
+    padding-right: 45px;
+}

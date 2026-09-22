@@ -1,18 +1,20 @@
 <?php
+session_start();
 include "database/db_connect.php";
- 
+define("ADMIN_EMAIL", "admin@sweethaven.com");
+
 $error = "";
 $success = "";
- 
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
- 
+
     // Get the values from the form fields
     $full_name = $_POST["full_name"];
     $email = $_POST["email"];
     $password = $_POST["password"];
     $confirm_password = $_POST["confirm_password"];
     $terms = isset($_POST["terms"]) ? "yes" : "no";
- 
+
     // Basic validation
     if ($full_name == "" || $email == "" || $password == "" || $confirm_password == "") {
         $error = "Please fill in all fields.";
@@ -20,29 +22,70 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $error = "Passwords do not match.";
     } elseif ($terms == "no") {
         $error = "You must agree to the Terms & Conditions.";
+    } elseif (strcasecmp($email, ADMIN_EMAIL) === 0) {
+
+        // ---- Admin signup path ----
+        $check_query = "SELECT admin_id FROM admin WHERE email = '$email'";
+        $check_result = mysqli_query($conn, $check_query);
+
+        if (mysqli_num_rows($check_result) > 0) {
+            $error = "An admin account already exists for this email. Please log in instead.";
+        } else {
+
+            $hashed_password = password_hash($password, PASSWORD_DEFAULT);
+            $insert_query = "INSERT INTO admin (full_name, email, password)
+                 VALUES ('$full_name', '$email', '$hashed_password')";
+
+            if (mysqli_query($conn, $insert_query)) {
+
+                $admin_id = mysqli_insert_id($conn);
+
+                session_regenerate_id(true);
+
+                $_SESSION["admin_id"] = $admin_id;
+                $_SESSION["admin_email"] = $email;
+                $_SESSION["admin_name"] = $full_name;
+
+                header("Location: admin/dashboard.php");
+                exit();
+
+            } else {
+                $error = "Something went wrong: " . mysqli_error($conn);
+            }
+        }
+
     } else {
- 
-       
+
+        // ---- Regular customer signup path ----
         $check_query = "SELECT id FROM users WHERE email = '$email'";
         $check_result = mysqli_query($conn, $check_query);
- 
+
         if (mysqli_num_rows($check_result) > 0) {
             $error = "An account with this email already exists.";
         } else {
-          
+
             $hashed_password = password_hash($password, PASSWORD_DEFAULT);
- 
+            $insert_query = "INSERT INTO users (full_name, email, password)
+                 VALUES ('$full_name', '$email', '$hashed_password')";
+
             // Insert the new user into the database
-            $insert_query = "INSERT INTO users (full_name, email, password) 
-                              VALUES ('$full_name', '$email', '$hashed_password')";
- 
             if (mysqli_query($conn, $insert_query)) {
 
-            header("Location: land.php");
-             exit();
+                // Get the ID of the newly created user
+                $user_id = mysqli_insert_id($conn);
 
-            } else { 
-                    $error = "Something went wrong: " . mysqli_error($conn);
+                // Log the user in automatically
+                session_regenerate_id(true);
+
+                $_SESSION["user_id"] = $user_id;
+                $_SESSION["full_name"] = $full_name;
+
+                // Go to the home page
+                header("Location: home.php");
+                exit();
+
+            } else {
+                $error = "Something went wrong: " . mysqli_error($conn);
             }
         }
     }

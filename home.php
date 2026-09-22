@@ -1,3 +1,125 @@
+<?php include "header.php"; 
+
+function getFeaturedProducts($conn = null) {
+    
+    if ($conn instanceof mysqli) {
+        // Wrapped in try/catch because your PHP's mysqli driver throws an
+        // exception on a bad query instead of just returning false -- without
+        // this, one wrong column name here fatal-errors the whole homepage
+        // instead of quietly falling back to the sample data below.
+        try {
+            // NOTE: aliased to match what the rest of this function expects
+            // (id, name, image...) even though the real columns in your
+            // products table are product_id, product_name, image_path.
+            $sql = "SELECT product_id AS id, product_name AS name, image_path AS image, price
+                    FROM products
+                    WHERE status = 'Active'
+                    ORDER BY product_id DESC
+                    LIMIT 6";
+            $result = mysqli_query($conn, $sql);
+            if ($result && mysqli_num_rows($result) > 0) {
+                $products = [];
+                while ($row = mysqli_fetch_assoc($result)) {
+                    // Your products table doesn't have color_name/color_hex/rating/
+                    // review_count/badge/product_type/is_featured yet, so we fill in
+                    // sensible defaults here rather than pretending the DB has them.
+                    $row['color_name']   = $row['color_name']   ?? '';
+                    $row['color_hex']    = $row['color_hex']    ?? '#997E67';
+                    $row['rating']       = $row['rating']       ?? 0;
+                    $row['review_count'] = $row['review_count'] ?? 0;
+                    $row['badge']        = $row['badge']        ?? null;
+                    $row['product_type'] = $row['product_type'] ?? 'decor';
+                    $products[] = $row;
+                }
+                return $products;
+            }
+        } catch (mysqli_sql_exception $e) {
+            // Query didn't match the real schema -- fall through to sample data below
+            // instead of crashing the page. Log it so it's easy to find later.
+            error_log('getFeaturedProducts DB query failed: ' . $e->getMessage());
+        }
+    }
+
+$sampleFile = __DIR__ . 'database/sample-featured-data.php';
+    if (file_exists($sampleFile)) {
+       include $sampleFile;
+       if (!empty($sampleFeaturedProducts)) {
+     return $sampleFeaturedProducts;
+        }
+    }
+
+return [
+        [
+            'id' => 1, 'name' => 'Peacock Floral Wallpaper',
+            'image' => 'https://i.pinimg.com/736x/8b/07/2a/8b072a3f96b92dfe5203094f7cd3f938.jpg',
+            'price' => 7000 , 'color_name' => 'Green', 'color_hex' => '#4E6B4E',
+            'rating' => 4.8, 'review_count' => 32, 'badge' => 'Bestseller', 'product_type' => 'wallpaper',
+        ],
+        [
+            'id' => 2, 'name' => 'Hexagon Floating Shelves',
+            'image' => 'hexagon.jpg',
+            'price' => 12500, 'color_name' => 'Black', 'color_hex' => '#2C1A0E',
+            'rating' => 4.6, 'review_count' => 18, 'badge' => null, 'product_type' => 'decor',
+        ],
+        [
+            'id' => 3, 'name' => 'Jute Pendant Lamp',
+            'image' => 'jute.jpg',
+            'price' => 11000, 'color_name' => 'Natural', 'color_hex' => '#997E67',
+            'rating' => 4.7, 'review_count' => 24, 'badge' => 'Bestseller', 'product_type' => 'decor',
+        ],
+        [
+        'id'           => 4, 'name'  => 'Wooden Wall Art Panel',
+        'image'        => 'https://i.pinimg.com/1200x/00/79/1a/00791a9f30f4495f732df6634c65db86.jpg',
+        'price'        => 27000, 'color_name'   => 'Walnut', 'color_hex'    => '#664930',
+        'rating'       => 4.5, 'review_count' => 11,
+        'badge'        => null, 'product_type' => 'decor',
+    ],
+    [
+        'id'           => 5,
+        'name'         => 'Bohemian Cushion Set',
+        'image'        => 'https://i.pinimg.com/1200x/aa/44/05/aa4405d40a79c528682b8f660bacefc6.jpg',
+        'price'        => 8500,
+        'color_name'   => 'Terracotta',
+        'color_hex'    => '#B44446',
+        'rating'       => 4.4,
+        'review_count' => 15,
+        'badge'        => null,
+        'product_type' => 'decor',
+    ],
+    [
+        'id'           => 6,
+        'name'         => 'Hand-Thrown Ceramic Vase',
+        'image'        => 'https://i.pinimg.com/736x/eb/70/2a/eb702ab9a0d2e1a8aeaf1178444d318c.jpg',
+        'price'        => 8500,
+        'color_name'   => 'Blue & White',
+        'color_hex'    => '#3B5A87',
+        'rating'       => 4.9,
+        'review_count' => 27,
+        'badge'        => 'Bestseller',
+        'product_type' => 'decor',
+    ]
+    ];
+}
+ 
+/** Render a 5-star rating (full / half / empty) as Font Awesome icons */
+function renderStars($rating) {
+    $rating = (float) $rating;
+    $html = '';
+    for ($i = 1; $i <= 5; $i++) {
+        if ($rating >= $i) {
+            $html .= '<i class="fa-solid fa-star"></i>';
+        } elseif ($rating >= $i - 0.5) {
+            $html .= '<i class="fa-solid fa-star-half-stroke"></i>';
+        } else {
+            $html .= '<i class="fa-regular fa-star"></i>';
+        }
+    }
+    return $html;
+}
+ 
+$featuredProducts = getFeaturedProducts($conn ?? null);
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -13,40 +135,7 @@
 </head>
 <body>
 <div class="tst" id="tst"></div>
-    <header id="header">
-        <a href="#" class="logo">
-            <img src="sweet-haven-logo-2.png" alt="Sweet Haven Logo">
-            <span class="logo-text">Sweet Haven</span>
-        </a>
-    <nav>
-        <a href="#" class="active">Home</a>
-        <a href="wallpaper.php">Wallpaper</a>
-        <a href="#shop">Shop</a>
-        <a href="#decor">Decor</a>
-        <a href="#collections">Collections</a>
-        <a href="#about">About</a>
-    </nav>
-    <div class="header-right">
-        <div class="search-box">
-            <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="#997E67" stroke-width="2">
-                <circle cx="11" cy="11" r="8"><path d="M21 21l-4.35-4.35"/> </circle>
-            </svg>
-    <input type="text" name="" id="" placeholder="Search decor...">
-    </div>
-
-    <button class="icon-btn" title="Account">
-        <i class="fa-thin fa-circle-user" style="color: rgb(99, 230, 190);"></i>
-    </button>
-
-    <button class="icon-btn" title="cart" style="position: relative;">
-        <svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
-      <span class="cart-badge" id="cartCount">0</span>
-    </button>
-
-    <button class="login-btn" onclick="window.location.href='login.php'"> Login  </button>
-</div>
-</header>
-
+    
 <section class="cero">
     <video class="cero-video" autoplay muted loop playsinline preload="auto">
         <source src="greenwallpaper.mp4" type="video/mp4">
@@ -139,74 +228,67 @@
     <div class="products-grid" id="productsGrid"></div>
     </div>
 
-    <div class="pro-grid">
-      <div class="pro-card">
-       <div class="pro-img">
-        <img src="https://i.pinimg.com/736x/8b/07/2a/8b072a3f96b92dfe5203094f7cd3f938.jpg" alt="Peacock Floral Wallapaper">
+    <div class="feat-grid" id="productGrid">
+     <?php if (!empty($featuredProducts)): ?>
+        <?php foreach ($featuredProducts as $product): ?>
+           <?php
+           $pid        = (int) ($product['id'] ?? 0);
+           $name       = htmlspecialchars($product['name'] ?? '');
+           $image      = htmlspecialchars($product['image'] ?? '');
+           $price      = number_format((float) ($product['price'] ?? 0));
+           $colorName  = htmlspecialchars($product['color_name'] ?? '');
+           $colorHex   = htmlspecialchars($product['color_hex'] ?? '#997E67');
+           $rating     = (float) ($product['rating'] ?? 0);
+           $reviewCnt  = (int) ($product['review_count'] ?? 0);
+           $badge      = $product['badge'] ?? null;
+           $productType= htmlspecialchars($product['product_type'] ?? 'decor');
+           // "decor" and "product" both mean the same source table (products);
+           // only "wallpaper" needs the different item-type for the cart.
+           $cartItemType = $productType === 'wallpaper' ? 'wallpaper' : 'product';
+           $detailLink = $productType === 'wallpaper'
+                    ? "wallpaper_details.php?id={$pid}"
+                    : "product.php?id={$pid}";
+       ?>
+ <div class="feat-card">
+     <a href="<?php echo $detailLink; ?>" class="feat-img-link">
+       <div class="feat-img">
+           <?php if ($badge): ?>
+               <span class="feat-badge"><?php echo htmlspecialchars($badge); ?></span>
+           <?php endif; ?>
+           <img src="<?php echo $image; ?>" alt="<?php echo $name; ?>">
+         </div>
+     </a>
+     <div class="feat-info">
+       <a href="<?php echo $detailLink; ?>" class="feat-name"><?php echo $name; ?></a>
+ 
+       <div class="feat-meta">
+           <span class="feat-color">
+               <span class="feat-dot" style="background: <?php echo $colorHex; ?>;"></span>
+               <?php echo $colorName; ?>
+           </span>
+           <span class="feat-rating">
+               <span class="feat-stars"><?php echo renderStars($rating); ?></span>
+               <?php echo number_format($rating, 1); ?>
+           </span>
        </div>
-    <div class="pro-info">
-       <h3>Peacock Floral Wallpaper</h3>
-       <div class="price">Rs. 7,000</div>
-    <button class="btn">Add To Cart</button>
-   </div>
- </div>
-
- <div class="pro-card">
-       <div class="pro-img">
-        <img src="hexagon.jpg" alt="Hexagon Floating Shelves">
+ 
+       <div class="feat-price-row">
+           <span class="feat-price">Rs.<?php echo $price; ?></span>
+           <button
+               class="feat-cart-btn add-to-cart-btn"
+               type="button"
+               data-product-id="<?php echo $pid; ?>"
+               data-item-type="<?php echo $cartItemType; ?>"
+           >
+               <i class="fa-solid fa-bag-shopping"></i> Add to Cart
+        </button>
        </div>
-    <div class="pro-info">
-       <h3>Hexagon Floating Shelves</h3>
-       <div class="price">Rs. 12,500</div>
-    <button class="btn">Add To Cart</button>
-   </div>
- </div>
-
- <div class="pro-card">
-       <div class="pro-img">
-        <img src="jute.jpg" alt="Jute Pendent Lamp">
        </div>
-    <div class="pro-info">
-       <h3>Jute Pendent Lamp</h3>
-       <div class="price">Rs. 11,000</div>
-    <button class="btn">Add To Cart</button>
-   </div>
- </div>
-
-
- <div class="pro-card">
-       <div class="pro-img">
-        <img src="https://i.pinimg.com/1200x/00/79/1a/00791a9f30f4495f732df6634c65db86.jpg" alt="Wooden Wall Art Panel">
-       </div>
-    <div class="pro-info">
-       <h3>Peacock Floral Wallpaper</h3>
-       <div class="price">Rs. 27,000</div>
-    <button class="btn"> To Cart</button>
-   </div>
- </div>
-
-  <div class="pro-card">
-       <div class="pro-img">
-        <img src="https://i.pinimg.com/1200x/aa/44/05/aa4405d40a79c528682b8f660bacefc6.jpg" alt="Bohemian Cushion Set">
-       </div>
-    <div class="pro-info">
-       <h3>Bohemian Cushion Set</h3>
-       <div class="price">Rs. 8,500</div>
-    <button class="btn">Add To Cart</button>
-   </div>
- </div>
-
- <div class="pro-card">
-       <div class="pro-img">
-        <img src="https://i.pinimg.com/736x/eb/70/2a/eb702ab9a0d2e1a8aeaf1178444d318c.jpg" alt="Hand-Thrown Ceramic Vase">
-       </div>
-    <div class="pro-info">
-       <h3>Hand-Thrown Ceramic Vase</h3>
-       <div class="price">Rs. 8,500</div>
-    <button class="btn">Add To Cart</button>
-   </div>
- </div>
-
+    </div>
+   <?php endforeach; ?>
+    <?php else: ?>
+        <p class="feat-empty">New pieces are on their way — check back soon.</p>
+    <?php endif; ?>
     </div>
 </section>
 
@@ -220,7 +302,8 @@
         <input type="text" name="Mood Palette" id="moodInput" placeholder="e.g. morning glory ">
         <button id="generatebtn">Generate Palette</button>
     </div>
-
+<?php include "mood-palette-popup.php"; ?>
+    
     <p class="helper">or try one of these</p>
     <div class="chips">
         <span class="chip" data-mood="midnight elegance">midnight elegance</span>
@@ -229,7 +312,7 @@
         <span class="chip" data-mood="rustic autumn">rustic autumn</span>
         <span class="chip" data-mood="spring garden">spring garden</span>
         <span class="chip" data-mood="romantic sunset">romantic sunset</span>
-        <span class="chip" data-mood=">cozy winter">cozy winter</span>
+        <span class="chip" data-mood="cozy winter">cozy winter</span>
     </div>
 </div>
 
@@ -281,11 +364,8 @@
 </footer>
 
 
-<script>
-
-</script>
+<?php include "mood-palette-popup.php"; ?>
 
 
 </body>
 </html>
-

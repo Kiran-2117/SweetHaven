@@ -109,12 +109,11 @@ if($categorySlug!= ""){
 
         <div class="product-bottom">
             <div class="product-price"><?php echo number_format($product['price'], 2); ?></div>
-            <form action="cart.php" method="POST" class="add-to-cart-form">
-                <input type="hidden" name="product_id" value="<?php echo $product['product_id']; ?>">
-                <button type="submit" class="btn-cart-pill">
-                    <i class="fa-solid fa-bag-shopping"></i> Add to Cart
-                </button>
-            </form>
+            <button type="button" class="btn-cart-pill add-to-cart-btn"
+                 data-id="<?php echo $product['product_id']; ?>"
+                 data-type="product">
+                <i class="fa-solid fa-bag-shopping"></i> Add to Cart
+            </button>
         </div>
 
     </div>

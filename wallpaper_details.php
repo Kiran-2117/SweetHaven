@@ -155,7 +155,10 @@ if ($wallpaper) {
             <input type="hidden" name="id" value="<?php echo $wallpaper['id']; ?>">
             <input type="hidden" name="name" value="<?php echo htmlspecialchars($wallpaper['name']); ?>">
             <input type="hidden" name="redirect" value="wallpaper_details.php?id=<?php echo $wallpaper['id']; ?>">
-            <button type="submit" class="btn btn-secondary btn-large"><i class="fa-solid fa-bag-shopping"></i>  Add to Cart</button>
+            <button type="submit" class="btn btn-secondary btn-large add-to-cart-btn"
+        data-id="<?php echo $wallpaper['id']; ?>"
+        data-type="wallpaper"
+        data-qty-input="qty"><i class="fa-solid fa-bag-shopping"></i>  Add to Cart</button>
         </form>
 
           <form action="checkout.php" method="POST">
